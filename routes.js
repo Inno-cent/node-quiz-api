@@ -73,10 +73,20 @@ router.put("/questions/:id", async (req, res) => {
 });
 
 // delete one quiz question
-router.delete("/questions/:id", (req, res) => {
-    // try{
-    //     const _id = req.params
-    // }
+router.delete("/questions/:id", async (req, res) => {
+  try {
+    const _id = req.params.id;
+
+    const question = await Question.deleteOne({ _id });
+
+    if (question.deletedCount === 0) {
+      return res.status(404).json();
+    } else {
+      return res.status(204).json();
+    }
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
 });
 
 // this one is just a test
